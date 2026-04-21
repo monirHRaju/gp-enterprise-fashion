@@ -130,6 +130,15 @@ export default function Footer() {
                   <FiPhone className="h-4 w-4 text-brass shrink-0" />
                   {siteSettings.phone}
                 </a>
+                
+                <a
+                  href={`tel:${siteSettings.phone2.replace(/\s+/g, "")}`}
+                  className="flex items-center gap-3 hover:text-brass transition-colors"
+                >
+                  <FiPhone className="h-4 w-4 text-brass shrink-0" />
+                  {siteSettings.phone2}
+                </a>
+
               </li>
               <li>
                 <a

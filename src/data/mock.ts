@@ -26,19 +26,42 @@ export const siteSettings = {
   brand: "Grameen Enterprise and Fashion",
   short: "Grameen Fashion",
   tagline: "Premium garments accessories for global buyers.",
-  phone: "+880 1700-000000",
-  email: "info@grameenfashion.com",
-  address: ["House 12, Road 4, Gulshan", "Dhaka 1212, Bangladesh"],
+  phone: "+880 1715427822",
+  phone2: "+880 1839953050",
+  email: "sakawathossain773@gmail.com",
+  address: ["Hossain Market, Ahasan Mollah Road, Tongi, Gazipur"],
   social: {
     facebook: "https://facebook.com",
     linkedin: "https://linkedin.com",
     instagram: "https://instagram.com",
-    whatsapp: "https://wa.me/8801700000000",
+    whatsapp: "https://wa.me/8801715427822",
   },
 };
+const img2 = (seed: string, w = 800, h = 800) =>
+  `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
 const img = (seed: string, w = 800, h = 800) =>
-  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+  `https://i.ibb.co.com/${seed}/${w}/${h}`;
+// https://i.ibb.co.com/rK6b1qz0/img-3.jpg
+// https://i.ibb.co.com/jZQyrWnf/img-8.jpg
+// https://i.ibb.co.com/vvmybhC9/img-24.jpg
+// https://i.ibb.co.com/XxY3B7bB/img-37.jpg
+// https://i.ibb.co.com/GvxF7JqB/img-52.jpg
+// https://i.ibb.co.com/2Y81YFm7/img-54.jpg
+// https://i.ibb.co.com/d0BXykmB/img-57.jpg
+// https://i.ibb.co.com/MDXRNG7b/img-70.jpg
+// https://i.ibb.co.com/bDdpQ9F/img-76.jpg
+// https://i.ibb.co.com/ZR07byPw/img-80.jpg
+
+// https://i.ibb.co.com/Pz3SccS0/img-60.jpg
+// https://i.ibb.co.com/9k9mw4pq/img-62.jpg
+// https://i.ibb.co.com/Kz75sPyQ/img-63.jpg
+// https://i.ibb.co.com/BH5S0HmK/img-82.jpg
+// https://i.ibb.co.com/JF8FGj2J/img-83.jpg
+// https://i.ibb.co.com/yBVNSwv2/img-85.jpg
+// https://i.ibb.co.com/SDW2G5Rj/img-94.jpg
+// https://i.ibb.co.com/FqcW9QDH/img-97.jpg
+// https://i.ibb.co.com/nq9pR9n0/img-98.jpg
 
 export const categories: Category[] = [
   {
@@ -46,10 +69,9 @@ export const categories: Category[] = [
     name: "Woven Labels",
     productCount: 48,
     coverImages: [
-      img("woven-1", 900, 700),
-      img("woven-2", 900, 700),
-      img("woven-3", 900, 700),
-      img("woven-4", 900, 700),
+      img("rK6b1qz0/img-3.jpg", 900, 700),
+      img("jZQyrWnf/img-8.jpg", 900, 700),
+      img("vvmybhC9/img-24.jpg", 900, 700),
     ],
   },
   {
@@ -57,10 +79,10 @@ export const categories: Category[] = [
     name: "Hang Tags",
     productCount: 36,
     coverImages: [
-      img("tag-1", 900, 700),
-      img("tag-2", 900, 700),
-      img("tag-3", 900, 700),
-      img("tag-4", 900, 700),
+      img("XxY3B7bB/img-37.jpg", 900, 700),
+      img("GvxF7JqB/img-52.jpg", 900, 700),
+      img("d0BXykmB/img-57.jpg", 900, 700),
+      img("4wTXPbNp/img-55.jpg", 900, 700),
     ],
   },
   {
@@ -68,10 +90,10 @@ export const categories: Category[] = [
     name: "Zippers & Trims",
     productCount: 52,
     coverImages: [
-      img("zip-1", 900, 700),
-      img("zip-2", 900, 700),
-      img("zip-3", 900, 700),
-      img("zip-4", 900, 700),
+      img("Pz3SccS0/img-60.jpg", 900, 700),
+      img("9k9mw4pq/img-62.jpg", 900, 700),
+      img("Kz75sPyQ/img-63.jpg", 900, 700),
+      img("BH5S0HmK/img-82.jpg", 900, 700),
     ],
   },
   {
@@ -79,10 +101,10 @@ export const categories: Category[] = [
     name: "Packaging",
     productCount: 24,
     coverImages: [
-      img("pack-1", 900, 700),
-      img("pack-2", 900, 700),
-      img("pack-3", 900, 700),
-      img("pack-4", 900, 700),
+      img("BH5S0HmK/img-82.jpg", 900, 700),
+      img("JF8FGj2J/img-83.jpg", 900, 700),
+      img("yBVNSwv2/img-85.jpg", 900, 700),
+      img("nq9pR9n0/img-98.jpg", 900, 700),
     ],
   },
 ];
@@ -120,7 +142,7 @@ const categoryCycle = [
 export const products: Product[] = titles.map((title, i) => ({
   id: `p-${i + 1}`,
   title,
-  image: img(`prod-${i + 1}`, 800, 800),
+  image: img2(`prod-${i + 1}`, 800, 800),
   categorySlug: categoryCycle[i]!,
   createdAt: new Date(Date.now() - i * 86_400_000).toISOString(),
 }));

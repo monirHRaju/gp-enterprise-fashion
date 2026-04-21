@@ -9,11 +9,11 @@ import SearchModal from "./SearchModal";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "About", href: "#about" },
-  { label: "Quality Policy", href: "#quality-policy" },
-  { label: "Products", href: "#products" },
-  { label: "Our Buyer", href: "#buyers" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/about" },
+  { label: "Quality Policy", href: "/quality-policy" },
+  { label: "Products", href: "/products" },
+  { label: "Our Buyer", href: "/buyers" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -59,9 +59,9 @@ export default function Navbar() {
               </span>
               <span className="font-display text-base md:text-lg font-semibold text-ink leading-tight">
                 <span className="hidden sm:inline">
-                  Grameen Enterprise and Fashion
+                  Grameen Enterprise
                 </span>
-                <span className="sm:hidden">Grameen Fashion</span>
+                <span className="sm:hidden">Grameen Enterprise</span>
               </span>
             </Link>
 
