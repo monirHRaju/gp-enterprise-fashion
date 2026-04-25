@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FiSearch, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
 import { siteSettings, categories } from "@/data/mock";
 import SearchModal from "./SearchModal";
@@ -56,12 +57,17 @@ export default function Navbar() {
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 group"
+              className="flex items-center gap-3 group"
               aria-label={siteSettings.brand}
             >
-              <span className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-primary text-primary-content font-display font-bold text-lg group-hover:bg-brass transition-colors">
-                G
-              </span>
+              <div className="relative h-10 w-10 md:h-12 md:w-12 transition-transform group-hover:scale-110">
+                <Image
+                  src="/grameen-logo.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <span className="font-display text-base md:text-lg font-semibold text-ink leading-tight">
                 <span className="hidden sm:inline">
                   Grameen Enterprise

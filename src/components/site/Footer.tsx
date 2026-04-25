@@ -9,6 +9,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import Container from "@/components/ui/Container";
+import Image from "next/image";
 import { categories, siteSettings } from "@/data/mock";
 
 const quickLinks = [
@@ -38,10 +39,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-brass text-ink font-display font-bold text-lg">
-                G
-              </span>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="relative h-10 w-10">
+                <Image
+                  src="/grameen-logo.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain filter brightness-0 invert"
+                />
+              </div>
               <span className="font-display text-lg font-semibold leading-tight">
                 Grameen Fashion
               </span>
