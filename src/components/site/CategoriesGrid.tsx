@@ -13,9 +13,26 @@ export default function CategoriesGrid() {
           subtitle="Explore our full range of premium garments accessories crafted for leading apparel brands."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((c, i) => (
-            <CategoryCard key={c.slug} category={c} delay={i * 0.08} />
-          ))}
+          {categories.slice(0, 8).map((c, i) => {
+            const types: ("slide-h" | "slide-v" | "fade")[] = [
+              "slide-h",
+              "fade",
+              "slide-v",
+              "slide-h",
+              "fade",
+              "slide-v",
+              "slide-h",
+              "fade",
+            ];
+            return (
+              <CategoryCard
+                key={c.slug}
+                category={c}
+                delay={i * 0.08}
+                transitionType={types[i % types.length]}
+              />
+            );
+          })}
         </div>
       </Container>
     </section>

@@ -3,15 +3,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FiSearch, FiMenu, FiX } from "react-icons/fi";
-import { siteSettings } from "@/data/mock";
+import { FiSearch, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
+import { siteSettings, categories } from "@/data/mock";
 import SearchModal from "./SearchModal";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  {
+    label: "Products",
+    href: "/products",
+    children: categories.map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
+  },
+  { label: "Fashion", href: "/fashion" },
   { label: "Quality Policy", href: "/quality-policy" },
-  { label: "Products", href: "/products" },
   { label: "Our Buyer", href: "/buyers" },
   { label: "Contact", href: "/contact" },
 ];
@@ -69,6 +74,46 @@ export default function Navbar() {
             <nav className="hidden lg:flex items-center gap-1">
               {NAV_ITEMS.map((item) => {
                 const isActive = active === item.label;
+                if (item.children) {
+                  return (
+                    <div key={item.label} className="relative group/nav">
+                      <Link
+                        href={item.href}
+                        onClick={() => setActive(item.label)}
+                        className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors ${
+                          isActive ? "text-forest" : "text-ink/80 hover:text-forest"
+                        }`}
+                      >
+                        {item.label}
+                        <FiChevronDown className="h-3.5 w-3.5 transition-transform group-hover/nav:rotate-180" />
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-underline"
+                            className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-brass rounded-full"
+                          />
+                        )}
+                      </Link>
+
+                      {/* Dropdown */}
+                      <div className="absolute left-0 top-full pt-2 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-200 z-50">
+                        <div className="bg-white rounded-xl shadow-xl border border-base-200 py-2 w-64 overflow-hidden">
+                          <div className="max-h-[70vh] overflow-y-auto">
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.label}
+                                href={child.href}
+                                className="block px-5 py-2.5 text-sm text-ink/70 hover:text-forest hover:bg-base-50 transition-colors"
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={item.label}
@@ -162,20 +207,39 @@ export default function Navbar() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.05 * i, duration: 0.3 }}
                     >
-                      <Link
-                        href={item.href}
-                        onClick={() => {
-                          setActive(item.label);
-                          setMobileOpen(false);
-                        }}
-                        className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
-                          isActive
-                            ? "bg-primary text-primary-content"
-                            : "text-ink hover:bg-base-200"
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
+                      <div className="mb-1">
+                        <Link
+                          href={item.href}
+                          onClick={() => {
+                            setActive(item.label);
+                            if (!item.children) setMobileOpen(false);
+                          }}
+                          className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                            isActive
+                              ? "bg-primary text-primary-content"
+                              : "text-ink hover:bg-base-200"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                        {item.children && (
+                          <div className="mt-1 ml-4 border-l border-base-300 pl-2 space-y-1">
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.label}
+                                href={child.href}
+                                onClick={() => {
+                                  setActive(item.label);
+                                  setMobileOpen(false);
+                                }}
+                                className="block px-4 py-2 text-sm text-ink/70 hover:text-forest hover:bg-base-200 rounded-lg transition-colors"
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </motion.div>
                   );
                 })}

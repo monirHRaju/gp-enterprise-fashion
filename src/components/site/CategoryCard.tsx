@@ -1,7 +1,7 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, EffectFade } from "swiper/modules";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight, FiArrowUpRight } from "react-icons/fi";
@@ -10,10 +10,19 @@ import type { Swiper as SwiperType } from "swiper";
 import type { Category } from "@/data/mock";
 
 import "swiper/css";
+import "swiper/css/effect-fade";
 
-type Props = { category: Category; delay?: number };
+type Props = {
+  category: Category;
+  delay?: number;
+  transitionType?: "slide-h" | "slide-v" | "fade";
+};
 
-export default function CategoryCard({ category, delay = 0 }: Props) {
+export default function CategoryCard({
+  category,
+  delay = 0,
+  transitionType = "slide-h",
+}: Props) {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
@@ -26,10 +35,16 @@ export default function CategoryCard({ category, delay = 0 }: Props) {
       className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-base-200 aspect-[4/5]"
     >
       <Swiper
-        modules={[Autoplay]}
+        modules={[Autoplay, EffectFade]}
         loop
-        speed={700}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        speed={1000}
+        direction={transitionType === "slide-v" ? "vertical" : "horizontal"}
+        effect={transitionType === "fade" ? "fade" : "slide"}
+        fadeEffect={{ crossFade: true }}
+        autoplay={{
+          delay: 3000 + Math.random() * 2000,
+          disableOnInteraction: false,
+        }}
         onSwiper={(s) => (swiperRef.current = s)}
         className="h-full w-full"
       >

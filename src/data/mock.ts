@@ -63,89 +63,157 @@ const img = (seed: string, w = 800, h = 800) =>
 // https://i.ibb.co.com/FqcW9QDH/img-97.jpg
 // https://i.ibb.co.com/nq9pR9n0/img-98.jpg
 
-export const categories: Category[] = [
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^\w ]+/g, "")
+    .replace(/ +/g, "-");
+
+const PRODUCT_RAW = [
   {
-    slug: "woven-labels",
-    name: "Woven Labels",
-    productCount: 48,
-    coverImages: [
-      img("rK6b1qz0/img-3.jpg", 900, 700),
-      img("jZQyrWnf/img-8.jpg", 900, 700),
-      img("vvmybhC9/img-24.jpg", 900, 700),
+    category: "Natureal Buckle",
+    images: [
+      "https://i.ibb.co.com/0VZ5S1Z8/NCSB01.png",
+      "https://i.ibb.co.com/V00Jqss2/NCSB02.png",
     ],
   },
   {
-    slug: "hang-tags",
-    name: "Hang Tags",
-    productCount: 36,
-    coverImages: [
-      img("XxY3B7bB/img-37.jpg", 900, 700),
-      img("GvxF7JqB/img-52.jpg", 900, 700),
-      img("d0BXykmB/img-57.jpg", 900, 700),
-      img("4wTXPbNp/img-55.jpg", 900, 700),
+    category: "Wooden Hanger",
+    images: [
+      "https://i.ibb.co.com/t9VkHGt/NWB01.png",
+      "https://i.ibb.co.com/XrJL2cvN/NWH-02.png",
+      "https://i.ibb.co.com/zT67GXQG/NWH-03.png",
+      "https://i.ibb.co.com/5x4pxKrw/NWH4.png",
+      "https://i.ibb.co.com/d4nmJJ8W/PWH-01.png",
     ],
   },
   {
-    slug: "zippers-trims",
-    name: "Zippers & Trims",
-    productCount: 52,
-    coverImages: [
-      img("Pz3SccS0/img-60.jpg", 900, 700),
-      img("9k9mw4pq/img-62.jpg", 900, 700),
-      img("Kz75sPyQ/img-63.jpg", 900, 700),
-      img("BH5S0HmK/img-82.jpg", 900, 700),
+    category: "Wooden Hair Comb",
+    images: [
+      "https://i.ibb.co.com/Rk7Tw6NJ/WHC-3.png",
+      "https://i.ibb.co.com/NnWNwK96/WHC-4.png",
+      "https://i.ibb.co.com/RpX4RfS6/WHC-5.png",
     ],
   },
   {
-    slug: "packaging",
-    name: "Packaging",
-    productCount: 24,
-    coverImages: [
-      img("BH5S0HmK/img-82.jpg", 900, 700),
-      img("JF8FGj2J/img-83.jpg", 900, 700),
-      img("yBVNSwv2/img-85.jpg", 900, 700),
-      img("nq9pR9n0/img-98.jpg", 900, 700),
+    category: "Bamboo Button",
+    images: [
+      "https://i.ibb.co.com/6c1gfKrQ/BB01.jpg",
+      "https://i.ibb.co.com/Xk3Twdz2/BB03.jpg",
+    ],
+  },
+  {
+    category: "Wood Button",
+    images: [
+      "https://i.ibb.co.com/3yCdGR7k/WB-458.jpg",
+      "https://i.ibb.co.com/zVDD2zxr/WB-566.jpg",
+      "https://i.ibb.co.com/TDhv7yBR/WB-567.jpg",
+      "https://i.ibb.co.com/MywvRw3d/WB-568.jpg",
+      "https://i.ibb.co.com/VW0h2cmp/WB-01.jpg",
+    ],
+  },
+  {
+    category: "River Shell Button",
+    images: [
+      "https://i.ibb.co.com/x8sHGQHp/RS35WW.jpg",
+      "https://i.ibb.co.com/Fk96b6M0/Smoke-RS35-SMK.jpg",
+      "https://i.ibb.co.com/TB87xkkf/Yellow-RS35-YC.jpg",
+    ],
+  },
+  {
+    category: "Coconut Shell Button",
+    images: [
+      "https://i.ibb.co.com/XhZbVVq/CB-07.jpg",
+      "https://i.ibb.co.com/gMXKMQrx/CB-08.jpg",
+      "https://i.ibb.co.com/xKFf9FDg/CB-09.jpg",
+      "https://i.ibb.co.com/0WZzPbH/CB-12.jpg",
+    ],
+  },
+  {
+    category: "Trocus Shell Button",
+    images: [
+      "https://i.ibb.co.com/gMMvq525/TBR-04.jpg",
+      "https://i.ibb.co.com/fVBwR6Hb/TBR-08.jpg",
+      "https://i.ibb.co.com/yny7b6Z5/TBR-30.jpg",
+    ],
+  },
+  {
+    category: "Wooden Beads",
+    images: [
+      "https://i.ibb.co.com/PGv8gQhY/WPT-226.jpg",
+      "https://i.ibb.co.com/0jjYYd4p/WPTBS-02.jpg",
+      "https://i.ibb.co.com/WpyHX287/WPTL-01.jpg",
+      "https://i.ibb.co.com/MDHzrZh5/WPTTC-03.jpg",
+    ],
+  },
+  {
+    category: "Real Horn Scraper",
+    images: [
+      "https://i.ibb.co.com/bRYkhsFv/RHS-05.jpg",
+      "https://i.ibb.co.com/VnWtBPc/RHS-06.jpg",
+      "https://i.ibb.co.com/0R7HtKSp/RHS-07.jpg",
+      "https://i.ibb.co.com/dJHPLY7Z/RHS-10.jpg",
+    ],
+  },
+  {
+    category: "Shell Beads",
+    images: [
+      "https://i.ibb.co.com/5X38WZRp/SB-001.jpg",
+      "https://i.ibb.co.com/MxC22Ldq/SB-002.jpg",
+    ],
+  },
+  {
+    category: "Real Horn Beads",
+    images: [
+      "https://i.ibb.co.com/QF8wrswc/HPTL-01.jpg",
+      "https://i.ibb.co.com/WNsZBtqX/HPTL-02.jpg",
+    ],
+  },
+  {
+    category: "Real Bone Button",
+    images: [
+      "https://i.ibb.co.com/YT7j45xS/BO-01.jpg",
+      "https://i.ibb.co.com/bRWmQL5G/BO-02.jpg",
+      "https://i.ibb.co.com/vxhx8cZ0/BO-03.jpg",
+    ],
+  },
+  {
+    category: "Real Horn Button",
+    images: [
+      "https://i.ibb.co.com/JFgTxwCz/RH-01.jpg",
+      "https://i.ibb.co.com/DPQXw2cB/RH-02-B.jpg",
+      "https://i.ibb.co.com/fVpwXrkd/RH-10.jpg",
+    ],
+  },
+  {
+    category: "Natural Jewellery",
+    images: [
+      "https://i.ibb.co.com/wFfdrtzm/NPN-01.jpg",
+      "https://i.ibb.co.com/3mf9FvtG/NPN-02.jpg",
+      "https://i.ibb.co.com/DHxcfVTD/NPN-04.jpg",
     ],
   },
 ];
 
-const titles = [
-  "Premium Woven Label",
-  "Satin Care Label",
-  "Leather Patch Tag",
-  "Kraft Hang Tag",
-  "Eco Cotton Tag",
-  "Metal Zipper Slider",
-  "Brass Rivet Set",
-  "Cord Stopper",
-  "Printed Poly Bag",
-  "Gift Ribbon Roll",
-  "Embroidered Badge",
-  "Luxury Foil Tag",
-];
-
-const categoryCycle = [
-  "woven-labels",
-  "woven-labels",
-  "woven-labels",
-  "hang-tags",
-  "hang-tags",
-  "hang-tags",
-  "zippers-trims",
-  "zippers-trims",
-  "zippers-trims",
-  "packaging",
-  "packaging",
-  "packaging",
-];
-
-export const products: Product[] = titles.map((title, i) => ({
-  id: `p-${i + 1}`,
-  title,
-  image: img2(`prod-${i + 1}`, 800, 800),
-  categorySlug: categoryCycle[i]!,
-  createdAt: new Date(Date.now() - i * 86_400_000).toISOString(),
+export const categories: Category[] = PRODUCT_RAW.map((group) => ({
+  slug: slugify(group.category),
+  name: group.category,
+  productCount: group.images.length,
+  coverImages: group.images,
 }));
+
+export const products: Product[] = PRODUCT_RAW.flatMap((group, gIdx) =>
+  group.images.map((imgUrl, i) => {
+    const fileName = imgUrl.split("/").pop()?.split(".")[0] || "product";
+    return {
+      id: `p-${gIdx}-${i}`,
+      title: `${group.category} - ${fileName}`,
+      image: imgUrl,
+      categorySlug: slugify(group.category),
+      createdAt: new Date(Date.now() - (gIdx * 10 + i) * 86_400_000).toISOString(),
+    };
+  }),
+);
 
 export const buyerLogos: BuyerLogo[] = [
   { name: "NorthPort" },
