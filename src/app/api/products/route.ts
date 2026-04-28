@@ -3,6 +3,21 @@ import { connectDB } from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
 import Category from "@/lib/models/Category";
 
+export async function POST(request: NextRequest) {
+  await connectDB();
+  const { title, images, category, isNewArrival } = await request.json();
+  if (!title?.trim() || !category) {
+    return NextResponse.json({ error: "title and category required" }, { status: 400 });
+  }
+  const product = await Product.create({
+    title: title.trim(),
+    images: images ?? [],
+    category,
+    isNewArrival: isNewArrival ?? false,
+  });
+  return NextResponse.json({ _id: String(product._id), title: product.title }, { status: 201 });
+}
+
 export async function GET(request: NextRequest) {
   await connectDB();
 
