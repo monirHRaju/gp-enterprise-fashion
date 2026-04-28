@@ -1,0 +1,23 @@
+import mongoose, { Schema } from "mongoose";
+
+const imageSchema = new Schema({ url: String, publicId: String }, { _id: false });
+
+const categorySchema = new Schema({
+  name: { type: String, required: true },
+  slug: { type: String, unique: true },
+  description: { type: String },
+  coverImages: [imageSchema],
+});
+
+categorySchema.pre("save", function (next) {
+  if (this.isModified("name") || this.isNew) {
+    this.slug = this.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-");
+  }
+  next();
+});
+
+export default mongoose.models.Category || mongoose.model("Category", categorySchema);
