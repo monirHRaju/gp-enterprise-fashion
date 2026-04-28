@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { motion } from "framer-motion";
@@ -14,13 +15,28 @@ const policies = [
 ];
 
 export default function QualityPolicyPage() {
+  const [title, setTitle] = useState("Quality Policy");
+  const [subtitle, setSubtitle] = useState(
+    "At Grameen Enterprise and Fashion, quality is not just a standard — it is our way of life."
+  );
+
+  useEffect(() => {
+    fetch("/api/pages/quality")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.title) setTitle(data.title);
+        if (data?.body) setSubtitle(data.body);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="bg-cream/30 py-16 md:py-24">
       <Container>
         <SectionHeading
           eyebrow="Our Commitment"
-          title="Quality Policy"
-          subtitle="At Grameen Enterprise and Fashion, quality is not just a standard — it is our way of life."
+          title={title}
+          subtitle={subtitle}
         />
 
         <div className="max-w-4xl mx-auto mt-12 space-y-6">

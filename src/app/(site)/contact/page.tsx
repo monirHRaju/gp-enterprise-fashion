@@ -1,16 +1,51 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { siteSettings } from "@/data/mock";
 import { motion } from "framer-motion";
 import { FiPhone, FiMail, FiMapPin, FiSend } from "react-icons/fi";
+import { FaFacebookF, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+
+interface ContactData {
+  phone?: string;
+  email?: string;
+  address?: string;
+  facebook?: string;
+  linkedin?: string;
+  whatsapp?: string;
+}
 
 export default function ContactPage() {
+  const [contact, setContact] = useState<ContactData>({
+    phone: siteSettings.phone,
+    email: siteSettings.email,
+    address: siteSettings.address[0],
+    facebook: siteSettings.social.facebook,
+    linkedin: siteSettings.social.linkedin,
+    whatsapp: siteSettings.social.whatsapp,
+  });
+
+  useEffect(() => {
+    fetch("/api/contact")
+      .then((r) => r.json())
+      .then((data: ContactData | null) => {
+        if (data) setContact(data);
+      })
+      .catch(() => {});
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert("Thank you for your message. We will get back to you soon!");
   };
+
+  const socials = [
+    { href: contact.facebook, Icon: FaFacebookF, label: "Facebook" },
+    { href: contact.linkedin, Icon: FaLinkedinIn, label: "LinkedIn" },
+    { href: contact.whatsapp, Icon: FaWhatsapp, label: "WhatsApp" },
+  ].filter((s) => s.href);
 
   return (
     <div className="bg-cream/30 py-16 md:py-24">
@@ -22,84 +57,108 @@ export default function ContactPage() {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">
-          {/* Contact Info & Form */}
+          {/* Info + Form */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-6"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white p-8 rounded-3xl shadow-sm border border-base-200">
-                <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-4">
                   <FiPhone className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-xl font-bold text-ink mb-2">Call Us</h3>
-                <div className="text-muted space-y-1">
-                  <p>{siteSettings.phone}</p>
-                  <p>{siteSettings.phone2}</p>
-                </div>
+                <p className="text-muted text-sm">{contact.phone}</p>
+                <p className="text-muted text-sm">{siteSettings.phone2}</p>
               </div>
               <div className="bg-white p-8 rounded-3xl shadow-sm border border-base-200">
-                <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-4">
                   <FiMail className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-xl font-bold text-ink mb-2">Email Us</h3>
-                <p className="text-muted">{siteSettings.email}</p>
+                <p className="text-muted text-sm break-all">{contact.email}</p>
               </div>
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-base-200">
-              <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-6">
-                <FiMapPin className="h-6 w-6" />
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center shrink-0">
+                  <FiMapPin className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-display text-xl font-bold text-ink mb-2">Our Location</h3>
+                  <p className="text-muted text-sm">{contact.address}</p>
+                </div>
               </div>
-              <h3 className="font-display text-xl font-bold text-ink mb-2">Our Location</h3>
-              <p className="text-muted">{siteSettings.address[0]}</p>
+              {socials.length > 0 && (
+                <div className="mt-6 pt-6 border-t border-base-200">
+                  <p className="text-xs text-muted uppercase tracking-wider mb-3">Follow us</p>
+                  <div className="flex gap-3">
+                    {socials.map(({ href, Icon, label }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        aria-label={label}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="h-10 w-10 rounded-full bg-forest/10 text-forest flex items-center justify-center hover:bg-forest hover:text-cream transition-colors"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <form onSubmit={handleSubmit} className="bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-base-200 space-y-6">
-              <h3 className="font-display text-2xl font-bold text-ink mb-4">Send a Message</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-ink/70 ml-1">Full Name</label>
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-base-200 space-y-5"
+            >
+              <h3 className="font-display text-2xl font-bold text-ink">Send a Message</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-ink/70">Full Name</label>
                   <input
                     type="text"
                     required
                     placeholder="John Doe"
-                    className="w-full px-5 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all text-sm"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-ink/70 ml-1">Email Address</label>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-ink/70">Email Address</label>
                   <input
                     type="email"
                     required
                     placeholder="john@example.com"
-                    className="w-full px-5 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all text-sm"
                   />
                 </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-ink/70 ml-1">Subject</label>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-ink/70">Subject</label>
                 <input
                   type="text"
                   required
-                  placeholder="Inquiry about Wooden Buttons"
-                  className="w-full px-5 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all"
+                  placeholder="Inquiry about products"
+                  className="w-full px-4 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-ink/70 ml-1">Message</label>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-ink/70">Message</label>
                 <textarea
                   rows={4}
                   required
                   placeholder="Tell us about your requirements..."
-                  className="w-full px-5 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-base-300 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all resize-none text-sm"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-forest text-cream py-4 rounded-xl font-bold text-lg hover:bg-ink transition-colors flex items-center justify-center gap-2 group"
+                className="w-full bg-forest text-cream py-4 rounded-xl font-bold hover:bg-ink transition-colors flex items-center justify-center gap-2 group"
               >
                 Send Message
                 <FiSend className="h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -119,7 +178,7 @@ export default function ContactPage() {
               width="100%"
               height="100%"
               style={{ border: 0 }}
-              allowFullScreen={true}
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="Office Location"

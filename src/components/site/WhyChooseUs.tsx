@@ -1,12 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FiAward,
-  FiCheckCircle,
-  FiGlobe,
-  FiTruck,
-} from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { FiAward, FiCheckCircle, FiGlobe, FiTruck } from "react-icons/fi";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Counter from "./Counter";
@@ -35,17 +31,37 @@ const features = [
   },
 ];
 
+const DEFAULT_TITLE = "Why Choose Grameen";
+const DEFAULT_SUBTITLE =
+  "Decades of craftsmanship, a global footprint, and a quality-first approach — everything your brand needs in an accessories partner.";
+
 export default function WhyChooseUs() {
+  const [title, setTitle] = useState(DEFAULT_TITLE);
+  const [subtitle, setSubtitle] = useState(DEFAULT_SUBTITLE);
+
+  useEffect(() => {
+    fetch("/api/pages/home-features")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.title) setTitle(data.title);
+        if (data?.body) setSubtitle(data.body);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
-    <section id="why-choose-us" className="py-16 md:py-24 bg-base-100 relative overflow-hidden">
+    <section
+      id="why-choose-us"
+      className="py-16 md:py-24 bg-base-100 relative overflow-hidden"
+    >
       <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-brass/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-forest/10 blur-3xl" />
 
       <Container className="relative">
         <SectionHeading
           eyebrow="Why us"
-          title="Why Choose Grameen"
-          subtitle="Decades of craftsmanship, a global footprint, and a quality-first approach — everything your brand needs in an accessories partner."
+          title={title}
+          subtitle={subtitle}
         />
 
         <motion.div
@@ -58,16 +74,12 @@ export default function WhyChooseUs() {
           }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {features.map(({ Icon, title, copy }) => (
+          {features.map(({ Icon, title: t, copy }) => (
             <motion.div
-              key={title}
+              key={t}
               variants={{
                 hidden: { opacity: 0, y: 24 },
-                show: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.5, ease: "easeOut" },
-                },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
               }}
               whileHover={{ y: -6 }}
               className="group rounded-2xl bg-cream border border-base-300 p-7 shadow-sm hover:shadow-xl transition-all duration-300"
@@ -78,9 +90,7 @@ export default function WhyChooseUs() {
               >
                 <Icon className="h-6 w-6" />
               </motion.div>
-              <h3 className="font-display text-xl font-semibold text-ink mb-2">
-                {title}
-              </h3>
+              <h3 className="font-display text-xl font-semibold text-ink mb-2">{t}</h3>
               <p className="text-sm text-muted leading-relaxed">{copy}</p>
             </motion.div>
           ))}

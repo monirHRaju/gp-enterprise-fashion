@@ -1,19 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
+import Category from "@/lib/models/Category";
 
 export async function GET(request: NextRequest) {
   await connectDB();
 
   const { searchParams } = request.nextUrl;
   const isNewArrival = searchParams.get("isNewArrival");
-  const category = searchParams.get("category");
+  const categorySlug = searchParams.get("category");
   const limit = parseInt(searchParams.get("limit") ?? "50");
   const page = parseInt(searchParams.get("page") ?? "1");
 
   const filter: Record<string, unknown> = {};
   if (isNewArrival === "true") filter.isNewArrival = true;
-  if (category) filter.category = category;
+
+  if (categorySlug) {
+    const cat = await Category.findOne({ slug: categorySlug }).select("_id").lean();
+    if (cat) filter.category = cat._id;
+    else return NextResponse.json({ products: [], total: 0, page, pages: 0 });
+  }
 
   const [products, total] = await Promise.all([
     Product.find(filter)
