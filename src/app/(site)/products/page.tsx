@@ -2,9 +2,6 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useMemo } from "react";
-import Topbar from "@/components/site/Topbar";
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
 import ProductGallery from "@/components/site/ProductGallery";
 import { categories, products } from "@/data/mock";
 import { motion } from "framer-motion";
@@ -25,11 +22,8 @@ function ProductsContent() {
   }, [activeCategorySlug]);
 
   const setCategory = (slug: string) => {
-    if (slug === "all") {
-      router.push("/products");
-    } else {
-      router.push(`/products?category=${slug}`);
-    }
+    if (slug === "all") router.push("/products");
+    else router.push(`/products?category=${slug}`);
   };
 
   return (
@@ -92,15 +86,10 @@ function ProductsContent() {
 
 export default function ProductsPage() {
   return (
-    <>
-      <Topbar />
-      <Navbar />
-      <main className="flex-1 bg-cream/30 min-h-screen">
-        <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
-          <ProductsContent />
-        </Suspense>
-      </main>
-      <Footer />
-    </>
+    <div className="bg-cream/30 min-h-screen">
+      <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+        <ProductsContent />
+      </Suspense>
+    </div>
   );
 }

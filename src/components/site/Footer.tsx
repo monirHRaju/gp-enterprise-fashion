@@ -14,11 +14,11 @@ import { categories, siteSettings } from "@/data/mock";
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "#about" },
-  { label: "Quality Policy", href: "#quality-policy" },
-  { label: "Products", href: "#products" },
-  { label: "Our Buyer", href: "#buyers" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/about" },
+  { label: "Quality Policy", href: "/quality-policy" },
+  { label: "Products", href: "/products" },
+  { label: "Our Buyer", href: "/our-buyer" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const socials = [
@@ -101,7 +101,7 @@ export default function Footer() {
               {categories.map((c) => (
                 <li key={c.slug}>
                   <Link
-                    href={`#${c.slug}`}
+                    href={`/products?category=${c.slug}`}
                     className="inline-flex items-center gap-2 hover:text-brass hover:translate-x-1 transition-all"
                   >
                     <span className="h-[1px] w-3 bg-primary-content/50" />

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import Image from "next/image";
 import { products, categories } from "@/data/mock";
@@ -13,6 +13,16 @@ type Props = {
 
 export default function SearchModal({ open, onClose }: Props) {
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setDebouncedQuery(query), 300);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
 
   useEffect(() => {
     if (!open) return;
@@ -28,11 +38,14 @@ export default function SearchModal({ open, onClose }: Props) {
   }, [open, onClose]);
 
   useEffect(() => {
-    if (!open) setQuery("");
+    if (!open) {
+      setQuery("");
+      setDebouncedQuery("");
+    }
   }, [open]);
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     if (!q) return [];
     return products
       .filter((p) => {
@@ -43,7 +56,7 @@ export default function SearchModal({ open, onClose }: Props) {
         );
       })
       .slice(0, 8);
-  }, [query]);
+  }, [debouncedQuery]);
 
   return (
     <AnimatePresence>
@@ -54,7 +67,7 @@ export default function SearchModal({ open, onClose }: Props) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[100] bg-ink/70 backdrop-blur-sm flex items-start justify-center pt-20 md:pt-32 px-4"
+          className="fixed inset-0 z-100 bg-ink/70 backdrop-blur-sm flex items-start justify-center pt-20 md:pt-32 px-4"
           onClick={onClose}
         >
           <motion.div
@@ -72,7 +85,7 @@ export default function SearchModal({ open, onClose }: Props) {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search products, categories…"
+                placeholder="Search products, categories..."
                 className="flex-1 bg-transparent outline-none text-base md:text-lg placeholder:text-muted/70"
               />
               <button
@@ -85,24 +98,22 @@ export default function SearchModal({ open, onClose }: Props) {
             </div>
 
             <div className="max-h-[60vh] overflow-y-auto">
-              {!query.trim() && (
+              {!debouncedQuery.trim() && (
                 <div className="px-5 py-10 text-center text-muted text-sm">
                   Start typing to search products or categories.
                 </div>
               )}
 
-              {query.trim() && results.length === 0 && (
+              {debouncedQuery.trim() && results.length === 0 && (
                 <div className="px-5 py-10 text-center text-muted text-sm">
-                  No results for <span className="text-ink">“{query}”</span>.
+                  No results for &quot;{debouncedQuery}&quot;.
                 </div>
               )}
 
               {results.length > 0 && (
                 <ul className="divide-y divide-base-300">
                   {results.map((p) => {
-                    const cat = categories.find(
-                      (c) => c.slug === p.categorySlug,
-                    );
+                    const cat = categories.find((c) => c.slug === p.categorySlug);
                     return (
                       <li key={p.id}>
                         <button
@@ -119,12 +130,8 @@ export default function SearchModal({ open, onClose }: Props) {
                             />
                           </div>
                           <div className="min-w-0">
-                            <div className="font-medium text-ink truncate">
-                              {p.title}
-                            </div>
-                            <div className="text-xs text-muted">
-                              {cat?.name}
-                            </div>
+                            <div className="font-medium text-ink truncate">{p.title}</div>
+                            <div className="text-xs text-muted">{cat?.name}</div>
                           </div>
                         </button>
                       </li>
