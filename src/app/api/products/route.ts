@@ -1,0 +1,41 @@
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import Product from "@/lib/models/Product";
+
+export async function GET(request: NextRequest) {
+  await connectDB();
+
+  const { searchParams } = request.nextUrl;
+  const isNewArrival = searchParams.get("isNewArrival");
+  const category = searchParams.get("category");
+  const limit = parseInt(searchParams.get("limit") ?? "50");
+  const page = parseInt(searchParams.get("page") ?? "1");
+
+  const filter: Record<string, unknown> = {};
+  if (isNewArrival === "true") filter.isNewArrival = true;
+  if (category) filter.category = category;
+
+  const [products, total] = await Promise.all([
+    Product.find(filter)
+      .populate("category", "name slug")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean(),
+    Product.countDocuments(filter),
+  ]);
+
+  return NextResponse.json({
+    products: products.map((p) => ({
+      _id: String(p._id),
+      title: p.title,
+      images: p.images ?? [],
+      category: p.category,
+      isNewArrival: p.isNewArrival,
+      createdAt: p.createdAt,
+    })),
+    total,
+    page,
+    pages: Math.ceil(total / limit),
+  });
+}
