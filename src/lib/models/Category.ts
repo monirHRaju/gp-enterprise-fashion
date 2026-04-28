@@ -9,7 +9,7 @@ const categorySchema = new Schema({
   coverImages: [imageSchema],
 });
 
-categorySchema.pre("save", function (next) {
+categorySchema.pre("save", async function () {
   if (this.isModified("name") || this.isNew) {
     this.slug = this.name
       .toLowerCase()
@@ -17,7 +17,6 @@ categorySchema.pre("save", function (next) {
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-");
   }
-  next();
 });
 
 export default mongoose.models.Category || mongoose.model("Category", categorySchema);
