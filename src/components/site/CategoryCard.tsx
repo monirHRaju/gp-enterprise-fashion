@@ -3,6 +3,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight, FiArrowUpRight } from "react-icons/fi";
 import { useRef } from "react";
@@ -15,14 +16,9 @@ import "swiper/css/effect-fade";
 type Props = {
   category: Category;
   delay?: number;
-  transitionType?: "slide-h" | "slide-v" | "fade";
 };
 
-export default function CategoryCard({
-  category,
-  delay = 0,
-  transitionType = "slide-h",
-}: Props) {
+export default function CategoryCard({ category, delay = 0 }: Props) {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
@@ -34,17 +30,19 @@ export default function CategoryCard({
       whileHover={{ y: -6 }}
       className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-base-200 aspect-[4/5]"
     >
+      <Link
+        href={`/products?category=${category.slug}`}
+        className="absolute inset-0 z-20"
+        aria-label={category.name}
+      />
+
       <Swiper
         modules={[Autoplay, EffectFade]}
         loop
         speed={1000}
-        direction={transitionType === "slide-v" ? "vertical" : "horizontal"}
-        effect={transitionType === "fade" ? "fade" : "slide"}
+        effect="fade"
         fadeEffect={{ crossFade: true }}
-        autoplay={{
-          delay: 3000 + Math.random() * 2000,
-          disableOnInteraction: false,
-        }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
         onSwiper={(s) => (swiperRef.current = s)}
         className="h-full w-full"
       >
@@ -55,6 +53,7 @@ export default function CategoryCard({
                 src={src}
                 alt={`${category.name} ${i + 1}`}
                 fill
+                unoptimized
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
@@ -64,32 +63,26 @@ export default function CategoryCard({
       </Swiper>
 
       {/* Gradient overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/85 via-ink/25 to-transparent" />
 
-      {/* Prev / next buttons */}
+      {/* Prev / Next — above Link layer */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          swiperRef.current?.slidePrev();
-        }}
+        onClick={(e) => { e.preventDefault(); swiperRef.current?.slidePrev(); }}
         aria-label="Previous image"
-        className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-cream/20 backdrop-blur border border-cream/30 text-cream flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-brass hover:border-brass hover:text-ink z-10"
+        className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-cream/20 backdrop-blur border border-cream/30 text-cream flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-brass hover:border-brass hover:text-ink z-30"
       >
         <FiChevronLeft className="h-4 w-4" />
       </button>
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          swiperRef.current?.slideNext();
-        }}
+        onClick={(e) => { e.preventDefault(); swiperRef.current?.slideNext(); }}
         aria-label="Next image"
-        className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-cream/20 backdrop-blur border border-cream/30 text-cream flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-brass hover:border-brass hover:text-ink z-10"
+        className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-cream/20 backdrop-blur border border-cream/30 text-cream flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-brass hover:border-brass hover:text-ink z-30"
       >
         <FiChevronRight className="h-4 w-4" />
       </button>
 
       {/* Bottom info */}
-      <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3 text-cream">
+      <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3 text-cream z-20 pointer-events-none">
         <div>
           <h3 className="font-display text-xl md:text-2xl font-semibold leading-tight">
             {category.name}

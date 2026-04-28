@@ -152,9 +152,9 @@ Rules:
 
 ### Module 6 — Category Cards (Homepage)
 - 4 category cards in responsive grid
-- Each card = independent Swiper instance auto-sliding through coverImages (3s interval)
+- Each card = independent Swiper instance auto-sliding with random transition effect through coverImages (3s interval)
 - Individual prev/next buttons per card
-- Category name overlay at bottom
+- Category name show below
 - Clicking navigates to /products?category=slug
 - Framer Motion stagger animation on scroll
 
