@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+Live Link: https://gp-enterprise-fashion.vercel.app/
+Documentation: https://www.notion.so/Grameen-Enterprise-and-Fashion-User-Guide-68e51e11d7de41cb881ac231b0da8243?source=copy_link
+
 ## Getting Started
 
 First, run the development server:
