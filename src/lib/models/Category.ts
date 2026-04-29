@@ -7,6 +7,7 @@ const categorySchema = new Schema({
   slug: { type: String, unique: true },
   description: { type: String },
   coverImages: [imageSchema],
+  isActive: { type: Boolean, default: true },
 });
 
 categorySchema.pre("save", async function () {

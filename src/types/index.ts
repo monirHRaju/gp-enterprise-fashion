@@ -19,6 +19,7 @@ export interface ICategory {
   slug: string;
   description?: string;
   coverImages: ImageAsset[];
+  isActive?: boolean;
 }
 
 export interface ISliderImage {

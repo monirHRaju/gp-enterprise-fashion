@@ -6,17 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FiSearch, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
-import { siteSettings, categories } from "@/data/mock";
+import { siteSettings } from "@/data/mock";
 import SearchModal from "./SearchModal";
 
-const NAV_ITEMS = [
+const STATIC_NAV = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  {
-    label: "Products",
-    href: "/products",
-    children: categories.map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
-  },
+  { label: "Products", href: "/products" },
   { label: "Quality Policy", href: "/quality-policy" },
   { label: "Our Buyer", href: "/our-buyer" },
   { label: "Contact", href: "/contact" },
@@ -32,6 +28,26 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [categoryChildren, setCategoryChildren] = useState<{ label: string; href: string }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((r) => r.json())
+      .then((data: { name: string; slug: string; isActive?: boolean }[]) => {
+        if (!Array.isArray(data)) return;
+        setCategoryChildren(
+          data
+            .filter((c) => c.isActive !== false)
+            .map((c) => ({ label: c.name, href: `/products?category=${c.slug}` }))
+        );
+      })
+      .catch(() => {});
+  }, []);
+
+  const NAV_ITEMS: { label: string; href: string; children?: { label: string; href: string }[] }[] =
+    STATIC_NAV.map((item) =>
+      item.label === "Products" ? { ...item, children: categoryChildren } : item
+    );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
