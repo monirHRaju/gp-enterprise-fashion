@@ -27,10 +27,14 @@ export async function GET(request: NextRequest) {
   const limit = parseInt(searchParams.get("limit") ?? "50");
   const page = parseInt(searchParams.get("page") ?? "1");
 
+  const categoryId = searchParams.get("categoryId");
+
   const filter: Record<string, unknown> = {};
   if (isNewArrival === "true") filter.isNewArrival = true;
 
-  if (categorySlug) {
+  if (categoryId) {
+    filter.category = categoryId;
+  } else if (categorySlug) {
     const cat = await Category.findOne({ slug: categorySlug }).select("_id").lean();
     if (cat) filter.category = cat._id;
     else return NextResponse.json({ products: [], total: 0, page, pages: 0 });

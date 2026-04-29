@@ -62,8 +62,8 @@ export default function CategoryCard({ category, delay = 0 }: Props) {
         ))}
       </Swiper>
 
-      {/* Gradient overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/85 via-ink/25 to-transparent" />
+      {/* Gradient overlay — z-10 ensures it renders above Swiper stacking context */}
+      <div className="pointer-events-none absolute inset-0 z-10 bg-linear-to-t from-ink/90 via-ink/40 to-transparent" />
 
       {/* Prev / Next — above Link layer */}
       <button
