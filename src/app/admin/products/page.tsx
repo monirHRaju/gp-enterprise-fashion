@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,7 +11,7 @@ const PAGE_SIZE = 10;
 
 type ProductRow = IProduct & { category: ICategory };
 
-export default function AdminProductsPage() {
+function ProductsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page") ?? "1");
@@ -216,5 +216,13 @@ export default function AdminProductsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-48"><span className="loading loading-spinner loading-lg text-primary" /></div>}>
+      <ProductsContent />
+    </Suspense>
   );
 }

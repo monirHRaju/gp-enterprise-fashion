@@ -20,7 +20,7 @@ export default async function EditProductPage({
   const product: IProduct = {
     _id: String(raw._id),
     title: raw.title,
-    images: (raw.images ?? []).map((img) => ({
+    images: (raw.images ?? []).map((img: { url?: string; publicId?: string }) => ({
       url: img.url ?? "",
       publicId: img.publicId ?? "",
     })),
