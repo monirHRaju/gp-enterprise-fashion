@@ -229,8 +229,8 @@ export const buyerLogos: BuyerLogo[] = [
 ];
 
 export const stats = [
-  { value: 30, suffix: "+", label: "Years" },
+  { value: 15, suffix: "+", label: "Years" },
   { value: 500, suffix: "+", label: "Products" },
   { value: 200, suffix: "+", label: "Buyers" },
-  { value: 20, suffix: "+", label: "Countries" },
+  { value: 10, suffix: "+", label: "Countries" },
 ];

@@ -65,7 +65,7 @@ export default function ContactPage() {
             className="space-y-6"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-8 rounded-3xl shadow-sm border border-base-200">
+              <div className="bg-cream/80 p-8 rounded-3xl shadow-sm border border-base-200">
                 <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-4">
                   <FiPhone className="h-6 w-6" />
                 </div>
@@ -73,7 +73,7 @@ export default function ContactPage() {
                 <p className="text-muted text-sm">{contact.phone}</p>
                 <p className="text-muted text-sm">{siteSettings.phone2}</p>
               </div>
-              <div className="bg-white p-8 rounded-3xl shadow-sm border border-base-200">
+              <div className="bg-cream/80 p-8 rounded-3xl shadow-sm border border-base-200">
                 <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center mb-4">
                   <FiMail className="h-6 w-6" />
                 </div>
@@ -82,7 +82,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-base-200">
+            <div className="bg-cream/80 p-8 rounded-3xl shadow-sm border border-base-200">
               <div className="flex items-start gap-4">
                 <div className="h-12 w-12 rounded-2xl bg-forest/10 text-forest flex items-center justify-center shrink-0">
                   <FiMapPin className="h-6 w-6" />
@@ -115,7 +115,7 @@ export default function ContactPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-base-200 space-y-5"
+              className="bg-cream/80 p-8 md:p-10 rounded-3xl shadow-lg border border-base-200 space-y-5"
             >
               <h3 className="font-display text-2xl font-bold text-ink">Send a Message</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -171,7 +171,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="h-full min-h-125 lg:min-h-full rounded-3xl overflow-hidden shadow-sm border border-base-200 bg-white"
+            className="h-full min-h-125 lg:min-h-full rounded-3xl overflow-hidden shadow-sm border border-base-200 bg-cream/80"
           >
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.4319407843644!2d90.404288!3d23.891122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c463f35076a5%3A0xc346761c5c56d787!2sHossain%20Market%2C%20Tongi!5e0!3m2!1sen!2sbd!4v1714050000000!5m2!1sen!2sbd"

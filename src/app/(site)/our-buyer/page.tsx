@@ -105,7 +105,7 @@ export default function OurBuyerPage() {
                 key={buyer.id}
                 variants={cardVariants}
                 whileHover={{ y: -6, scale: 1.03 }}
-                className="group bg-white rounded-2xl border border-base-200 shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col items-center gap-4"
+                className="group bg-cream/80 rounded-2xl border border-base-200 shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col items-center gap-4"
               >
                 {/* Logo or initials */}
                 <div className="w-full aspect-[3/2] rounded-xl overflow-hidden bg-base-100 flex items-center justify-center">

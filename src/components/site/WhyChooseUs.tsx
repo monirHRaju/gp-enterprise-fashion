@@ -11,7 +11,7 @@ import { stats } from "@/data/mock";
 const features = [
   {
     Icon: FiAward,
-    title: "30+ Years Experience",
+    title: "15+ Years Experience",
     copy: "Serving global buyers since 1994 with heritage craftsmanship.",
   },
   {
@@ -22,9 +22,9 @@ const features = [
   {
     Icon: FiGlobe,
     title: "Global Buyer Network",
-    copy: "Trusted by 200+ brands across more than 20 countries.",
+    copy: "Trusted by 50+ brands across 10 countries.",
   },
-  {
+  { 
     Icon: FiTruck,
     title: "On-Time Delivery",
     copy: "98% on-time shipment rate, backed by proven logistics.",
@@ -52,7 +52,7 @@ export default function WhyChooseUs() {
   return (
     <section
       id="why-choose-us"
-      className="py-16 md:py-24 bg-base-100 relative overflow-hidden"
+      className="py-16 md:py-24 bg-base-100/60 relative overflow-hidden"
     >
       <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-brass/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-forest/10 blur-3xl" />

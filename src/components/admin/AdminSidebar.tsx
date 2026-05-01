@@ -13,6 +13,8 @@ import {
   FiPhone,
   FiFileText,
   FiLogOut,
+  FiShoppingBag,
+  FiBookmark,
 } from "react-icons/fi";
 
 const NAV = [
@@ -23,6 +25,11 @@ const NAV = [
   { label: "Buyers", href: "/admin/buyers", Icon: FiUsers },
   { label: "Contact", href: "/admin/contact", Icon: FiPhone },
   { label: "Pages", href: "/admin/pages", Icon: FiFileText },
+];
+
+const FASHION_NAV = [
+  { label: "Fashion Products", href: "/admin/fashion/products", Icon: FiShoppingBag },
+  { label: "Fashion Categories", href: "/admin/fashion/categories", Icon: FiBookmark },
 ];
 
 export default function AdminSidebar() {
@@ -52,6 +59,27 @@ export default function AdminSidebar() {
             href === "/admin/dashboard"
               ? pathname === href
               : pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 transition-all group ${
+                isActive
+                  ? "bg-white/15 text-cream"
+                  : "text-cream/70 hover:bg-white/10 hover:text-cream"
+              }`}
+            >
+              <Icon className="h-5 w-5 shrink-0" />
+              <span className="hidden lg:block text-sm font-medium">{label}</span>
+            </Link>
+          );
+        })}
+
+        <div className="my-3 mx-3 border-t border-white/10" />
+        <p className="hidden lg:block px-3 mb-2 text-xs font-semibold text-cream/40 uppercase tracking-widest">Fashion</p>
+
+        {FASHION_NAV.map(({ label, href, Icon }) => {
+          const isActive = pathname.startsWith(href);
           return (
             <Link
               key={href}

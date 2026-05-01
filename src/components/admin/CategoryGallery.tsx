@@ -26,6 +26,7 @@ interface PendingItem {
 interface Props {
   categoryId: string;
   categoryName: string;
+  apiBase?: string; // default: "/api/products"
 }
 
 // ── Inline-editable title ─────────────────────────────────────────
@@ -33,10 +34,12 @@ function TitleEditor({
   productId,
   initialTitle,
   onSaved,
+  apiBase,
 }: {
   productId: string;
   initialTitle: string;
   onSaved: (newTitle: string) => void;
+  apiBase: string;
 }) {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(initialTitle);
@@ -50,7 +53,7 @@ function TitleEditor({
     if (!trimmed) { setValue(initialTitle); setEditing(false); return; }
     if (trimmed === initialTitle) { setEditing(false); return; }
     setSaving(true);
-    await fetch(`/api/products/${productId}`, {
+    await fetch(`${apiBase}/${productId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: trimmed }),
@@ -98,9 +101,11 @@ function TitleEditor({
 function BulkUpload({
   categoryId,
   onDone,
+  apiBase,
 }: {
   categoryId: string;
   onDone: () => void;
+  apiBase: string;
 }) {
   const [items, setItems] = useState<PendingItem[]>([]);
   const [saving, setSaving] = useState(false);
@@ -163,7 +168,7 @@ function BulkUpload({
     setSaving(true);
     await Promise.all(
       ready.map((it) =>
-        fetch("/api/products", {
+        fetch(apiBase, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -280,7 +285,7 @@ function BulkUpload({
 }
 
 // ── Main gallery ──────────────────────────────────────────────────
-export default function CategoryGallery({ categoryId, categoryName }: Props) {
+export default function CategoryGallery({ categoryId, categoryName, apiBase = "/api/products" }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [bulkOpen, setBulkOpen] = useState(false);
@@ -289,7 +294,7 @@ export default function CategoryGallery({ categoryId, categoryName }: Props) {
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
-    const res = await fetch(`/api/products?categoryId=${categoryId}&limit=200`);
+    const res = await fetch(`${apiBase}?categoryId=${categoryId}&limit=200`);
     const data = await res.json();
     setProducts(data.products ?? []);
     setLoading(false);
@@ -304,7 +309,7 @@ export default function CategoryGallery({ categoryId, categoryName }: Props) {
   async function confirmDelete() {
     if (!deleteTarget) return;
     setDeleting(true);
-    await fetch(`/api/products/${deleteTarget._id}`, { method: "DELETE" });
+    await fetch(`${apiBase}/${deleteTarget._id}`, { method: "DELETE" });
     setProducts((prev) => prev.filter((p) => p._id !== deleteTarget._id));
     setDeleteTarget(null);
     setDeleting(false);
@@ -337,6 +342,7 @@ export default function CategoryGallery({ categoryId, categoryName }: Props) {
         <BulkUpload
           categoryId={categoryId}
           onDone={() => { fetchProducts(); setBulkOpen(false); }}
+          apiBase={apiBase}
         />
       )}
 
@@ -392,6 +398,7 @@ export default function CategoryGallery({ categoryId, categoryName }: Props) {
                   productId={product._id}
                   initialTitle={product.title}
                   onSaved={(t) => updateTitle(product._id, t)}
+                  apiBase={apiBase}
                 />
               </div>
             </div>

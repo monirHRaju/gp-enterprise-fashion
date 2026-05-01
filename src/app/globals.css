@@ -50,7 +50,8 @@
 
 html,
 body {
-  background: var(--color-base-100);
+  background: linear-gradient(160deg, #faf7f2 0%, #f2ece0 60%, #e9e1d3 100%);
+  background-attachment: fixed;
   color: var(--color-base-content);
   font-family: var(--font-sans);
 }

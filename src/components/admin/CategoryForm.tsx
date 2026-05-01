@@ -7,13 +7,15 @@ import type { ICategory, ImageAsset } from "@/types";
 
 interface Props {
   category?: ICategory;
+  apiBase?: string;    // default: "/api/categories"
+  backHref?: string;  // default: "/admin/categories"
 }
 
 function toSlug(name: string) {
   return name.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
 }
 
-export default function CategoryForm({ category }: Props) {
+export default function CategoryForm({ category, apiBase = "/api/categories", backHref = "/admin/categories" }: Props) {
   const router = useRouter();
   const [name, setName] = useState(category?.name ?? "");
   const [description, setDescription] = useState(category?.description ?? "");
@@ -27,7 +29,7 @@ export default function CategoryForm({ category }: Props) {
     setSaving(true);
     setError("");
 
-    const url = category ? `/api/categories/${category._id}` : "/api/categories";
+    const url = category ? `${apiBase}/${category._id}` : apiBase;
     const method = category ? "PATCH" : "POST";
 
     const res = await fetch(url, {
@@ -37,7 +39,7 @@ export default function CategoryForm({ category }: Props) {
     });
 
     if (res.ok) {
-      router.push("/admin/categories");
+      router.push(backHref);
       router.refresh();
     } else {
       const data = await res.json().catch(() => ({}));
@@ -103,7 +105,7 @@ export default function CategoryForm({ category }: Props) {
           {saving && <span className="loading loading-spinner loading-sm" />}
           {category ? "Update Category" : "Create Category"}
         </button>
-        <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
+        <button type="button" className="btn btn-ghost" onClick={() => router.push(backHref)}>
           Cancel
         </button>
       </div>

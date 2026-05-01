@@ -156,11 +156,11 @@ Each tile:
 **Tiles (copy):**
 1. **30+ Years Experience** — Serving global buyers since 1994.
 2. **ISO-Certified Quality** — Every product meets international standards.
-3. **Global Buyer Network** — Trusted by 200+ brands across 20 countries.
+3. **Global Buyer Network** — Trusted by 50+ brands across.
 4. **On-Time Delivery** — 98% on-time shipment track record.
 
 **Counter strip below tiles:** four stats counting up from 0 when the section enters viewport (Framer Motion `useMotionValue` + `useTransform`):
-- 30+ Years • 500+ Products • 200+ Buyers • 20+ Countries
+- 15+ Years • 500+ Products • 15+ Buyers • 10+ Countries
 
 ### 4.7 Our Buyers (infinite logo marquee)
 - Horizontal strip, `py-12`, cream-to-white subtle gradient.

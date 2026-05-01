@@ -13,6 +13,7 @@ const STATIC_NAV = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
+  { label: "Fashion", href: "/fashion" },
   { label: "Quality Policy", href: "/quality-policy" },
   { label: "Our Buyer", href: "/our-buyer" },
   { label: "Contact", href: "/contact" },
@@ -29,6 +30,7 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoryChildren, setCategoryChildren] = useState<{ label: string; href: string }[]>([]);
+  const [fashionChildren, setFashionChildren] = useState<{ label: string; href: string }[]>([]);
 
   useEffect(() => {
     fetch("/api/categories")
@@ -42,12 +44,25 @@ export default function Navbar() {
         );
       })
       .catch(() => {});
+    fetch("/api/fashion-categories")
+      .then((r) => r.json())
+      .then((data: { name: string; slug: string; isActive?: boolean }[]) => {
+        if (!Array.isArray(data)) return;
+        setFashionChildren(
+          data
+            .filter((c) => c.isActive !== false)
+            .map((c) => ({ label: c.name, href: `/fashion?category=${c.slug}` }))
+        );
+      })
+      .catch(() => {});
   }, []);
 
   const NAV_ITEMS: { label: string; href: string; children?: { label: string; href: string }[] }[] =
-    STATIC_NAV.map((item) =>
-      item.label === "Products" ? { ...item, children: categoryChildren } : item
-    );
+    STATIC_NAV.map((item) => {
+      if (item.label === "Products") return { ...item, children: categoryChildren };
+      if (item.label === "Fashion") return { ...item, children: fashionChildren };
+      return item;
+    });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -106,7 +121,7 @@ export default function Navbar() {
 
                       {/* Dropdown */}
                       <div className="absolute left-0 top-full pt-2 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-200 z-50">
-                        <div className="bg-white rounded-xl shadow-xl border border-base-200 py-2 w-64 overflow-hidden">
+                        <div className="bg-cream rounded-xl shadow-xl border border-base-200 py-2 w-64 overflow-hidden">
                           <div className="max-h-[70vh] overflow-y-auto">
                             {item.children.map((child) => (
                               <Link

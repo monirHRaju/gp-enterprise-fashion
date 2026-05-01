@@ -47,7 +47,7 @@ export default function QualityPolicyPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="group bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-base-200 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              className="group bg-cream/80 p-8 md:p-10 rounded-3xl shadow-sm border border-base-200 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
               <div className="h-16 w-16 shrink-0 rounded-2xl bg-forest/10 text-forest flex items-center justify-center group-hover:bg-forest group-hover:text-cream transition-colors duration-300">
                 <policy.icon className="h-8 w-8" />
@@ -76,15 +76,15 @@ export default function QualityPolicyPage() {
         </motion.div>
 
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white/60 backdrop-blur-sm p-8 rounded-3xl border border-base-200">
+          <div className="bg-cream/80/60 backdrop-blur-sm p-8 rounded-3xl border border-base-200">
             <h4 className="font-bold text-forest mb-3 uppercase tracking-wider text-sm">Philosophy</h4>
             <p className="text-ink/70">Concentrating on prevention methods to make quality a permanent habit.</p>
           </div>
-          <div className="bg-white/60 backdrop-blur-sm p-8 rounded-3xl border border-base-200">
+          <div className="bg-cream/80/60 backdrop-blur-sm p-8 rounded-3xl border border-base-200">
             <h4 className="font-bold text-forest mb-3 uppercase tracking-wider text-sm">Execution</h4>
             <p className="text-ink/70">Ensuring each team member is committed to performing exactly as specified.</p>
           </div>
-          <div className="bg-white/60 backdrop-blur-sm p-8 rounded-3xl border border-base-200">
+          <div className="bg-cream/80/60 backdrop-blur-sm p-8 rounded-3xl border border-base-200">
             <h4 className="font-bold text-forest mb-3 uppercase tracking-wider text-sm">Outcome</h4>
             <p className="text-ink/70">Delivering defect-free products that exceed customer expectations.</p>
           </div>

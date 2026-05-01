@@ -33,7 +33,7 @@ export default function CategoriesGrid() {
   const displayed = categories.length > 0 ? categories : mockCategories;
 
   return (
-    <section id="categories" className="py-16 md:py-24 bg-base-100">
+    <section id="categories" className="py-16 md:py-24 bg-base-100/60">
       <Container>
         <SectionHeading
           eyebrow="What we make"
