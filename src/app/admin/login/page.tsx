@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FiMail, FiLock, FiLogIn } from "react-icons/fi";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +28,7 @@ export default function AdminLoginPage() {
       setError("Invalid email or password.");
       setLoading(false);
     } else {
-      router.push("/admin/dashboard");
+      window.location.href = "/admin/dashboard";
     }
   };
 

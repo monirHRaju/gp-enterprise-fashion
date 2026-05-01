@@ -1,6 +1,7 @@
 "use client";
 
-import { FiMail, FiPhone } from "react-icons/fi";
+import { FiMail, FiPhone, FiLock } from "react-icons/fi";
+import Link from "next/link";
 import {
   FaFacebookF,
   FaLinkedinIn,
@@ -57,6 +58,14 @@ export default function Topbar() {
               </a>
             ))}
           </div>
+          <Link
+            href="/admin"
+            className="flex items-center gap-1.5 opacity-50 hover:opacity-100 hover:text-brass transition-all text-xs"
+            title="Admin Login"
+          >
+            <FiLock className="h-3 w-3" />
+            Admin
+          </Link>
         </div>
       </div>
     </div>
